@@ -1,23 +1,189 @@
 {% extends "base.html" %}
-
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="auth-container glass-panel">
-    <h2 style="text-align: center; margin-bottom: 20px;">Login</h2>
-    <form method="POST">
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" class="form-control" id="email" name="email" required>
+
+<div class="auth-wrapper">
+
+    <div class="auth-card glass-panel">
+
+        <!-- Header -->
+        <div class="auth-header">
+            <h2>Welcome Back</h2>
+            <p>Login to continue your typing journey</p>
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash-message flash-{{ category }}">
+                <span class="flash-icon">
+                    {% if category == 'error' %}⚠{% elif category == 'success' %}✔{% else %}ℹ{% endif %}
+                </span>
+                <span class="flash-text">{{ message }}</span>
+                <span class="flash-close" onclick="this.parentElement.remove()">✕</span>
+                <div class="flash-progress"></div>
+            </div>
+            {% endfor %}
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
-    </form>
-    <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
-        Don't have an account? <a href="{{ url_for('auth.signup') }}">Sign Up</a>
-    </p>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Form -->
+        <form method="POST" class="auth-form">
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">@</span>
+                    <input type="email" class="form-control enhanced-input" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" class="form-control enhanced-input" id="password" name="password" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary auth-btn">
+                Login →
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+            <p>
+                Don't have an account?
+                <a href="{{ url_for('auth.signup') }}">Sign Up</a>
+            </p>
+        </div>
+
+    </div>
+
 </div>
+
+
+<style>
+
+/* Layout */
+.auth-wrapper {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 40px;
+    border-radius: 20px;
+    position: relative;
+}
+
+/* Header */
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.auth-header p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Flash */
+.flash-container {
+    margin-bottom: 20px;
+}
+
+.flash-message {
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.flash-error {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid var(--incorrect-color);
+    color: var(--incorrect-color);
+}
+
+.flash-success {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid var(--correct-color);
+    color: var(--correct-color);
+}
+
+/* Form */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.enhanced-input {
+    padding-left: 35px;
+    height: 45px;
+    transition: all 0.3s ease;
+}
+
+.enhanced-input:focus {
+    border-color: var(--primary-neon);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* Button */
+.auth-btn {
+    margin-top: 10px;
+    width: 100%;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Footer */
+.auth-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.auth-footer a {
+    font-weight: 600;
+}
+
+@media (max-width: 500px) {
+    .auth-card {
+        padding: 30px;
+    }
+}
+
+</style>
+
 {% endblock %}

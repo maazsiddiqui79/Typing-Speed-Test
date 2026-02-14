@@ -3,39 +3,231 @@
 {% block title %}About Developer{% endblock %}
 
 {% block content %}
-<div class="container" style="padding: 20px; max-width: 900px; margin: 0 auto;">
-    <div class="glass-panel" style="padding: 40px;">
-        <h1
-            style="text-align: center; margin-bottom: 20px; background: linear-gradient(to right, var(--text-main), var(--primary-neon)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-            About the Developer</h1>
 
-        <div class="about-text">
-            <p><strong>I’m Maaz Siddiqui</strong>, a Computer Engineering student with a strong foundation in
+<div class="about-container">
+
+    <div class="about-card">
+
+        <!-- LEFT PROFILE SECTION -->
+        <div class="about-left">
+
+            <div class="profile-circle">
+                MS
+            </div>
+
+            <h2 class="dev-name">Maaz Siddiqui</h2>
+            <p class="dev-role">Computer Engineering Student</p>
+
+            <div class="skill-stack">
+                <span>Python</span>
+                <span>JavaScript</span>
+                <span>Vibe Coding</span>
+                <span>Java</span>
+                <span>Django</span>
+                <span>Flask</span>
+                <span>Figma</span>
+            </div>
+
+            <a href="https://the-maaz-portfolio.vercel.app/" target="_blank" class="portfolio-button">
+                Visit My Portfolio →
+            </a>
+
+        </div>
+
+        <!-- RIGHT CONTENT SECTION -->
+        <div class="about-right">
+
+            <h1 class="about-title">About the Developer</h1>
+
+            <div class="accent-line"></div>
+
+            <p>
+                <strong>I’m Maaz Siddiqui</strong>, a Computer Engineering student with a strong foundation in
                 programming, structured development, and modern technologies. I approach engineering with discipline,
                 clarity, and long-term thinking — focusing on building solutions that are efficient, scalable, and
-                practically deployable.</p>
+                practically deployable.
+            </p>
 
-            <p style="margin-top: 20px; font-style: italic; color: var(--secondary-neon); text-align: center;">
+            <p>
                 Full Stack Developer | AI & ML Enthusiast | Software Engineer | Problem Solver | Backend Developer |
                 Frontend Architect | Automation Learner | Tech Researcher | UI/UX Oriented Builder
             </p>
 
-            <p style="margin-top: 20px;">I specialize in developing full-stack web applications with strong backend
-                logic and clean, responsive interfaces. My interests extend into Artificial Intelligence, Machine
-                Learning fundamentals, automation systems, and performance optimization. I focus on writing clean,
-                modular code while ensuring system stability and user-centric design.</p>
+            <p>
+                I specialize in developing full-stack web applications with strong backend logic and clean,
+                responsive interfaces. My interests extend into Artificial Intelligence, Machine Learning fundamentals,
+                automation systems, and performance optimization. I focus on writing clean, modular code while ensuring
+                system stability and user-centric design.
+            </p>
 
-            <p style="margin-top: 20px;">My technical stack includes <strong class="about-highlight">Python, JavaScript,
-                    Java, Django, Flask,
-                    and Figma</strong>, enabling me to bridge software architecture with real-world usability. I treat
-                engineering as structured problem-solving — where every decision is intentional and every line of code
-                has measurable purpose.</p>
+            <p>
+                My technical stack includes <strong class="highlight">
+                    Python, JavaScript, Java, Django, Flask, and Figma
+                </strong>, enabling me to bridge software architecture with real-world usability. I treat engineering
+                as structured problem-solving — where every decision is intentional and every line of code has
+                measurable purpose.
+            </p>
+
         </div>
 
-        <div style="margin-top: 40px; text-align: center;">
-            <a href="https://the-maaz-portfolio.vercel.app/" target="_blank" class="btn btn-primary"
-                style="padding: 12px 30px; font-size: 1.1rem;">Visit My Portfolio</a>
-        </div>
     </div>
+
 </div>
+
+
+<style>
+    /* MAIN WRAPPER */
+    .about-container {
+        padding: 60px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* CARD LAYOUT */
+    .about-card {
+        display: flex;
+        gap: 60px;
+        padding: 60px;
+        border-radius: 25px;
+        backdrop-filter: blur(25px);
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Decorative Glow */
+    .about-card::before {
+        content: "";
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, var(--primary-neon) 0%, transparent 70%);
+        opacity: 0.08;
+        top: -200px;
+        right: -200px;
+    }
+
+    /* LEFT SIDE */
+    .about-left {
+        flex: 1;
+        text-align: center;
+    }
+
+    .profile-circle {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #000;
+        margin: 0 auto 20px auto;
+    }
+
+    .dev-name {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+    }
+
+    .dev-role {
+        color: var(--text-secondary);
+        margin-bottom: 30px;
+    }
+
+    .skill-stack {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 40px;
+    }
+
+    .skill-stack span {
+        padding: 8px 16px;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+    .skill-stack span:hover {
+        background: var(--primary-neon);
+        color: #000;
+        transform: translateY(-3px);
+    }
+
+    /* BUTTON */
+    .portfolio-button {
+        display: inline-block;
+        padding: 14px 35px;
+        border-radius: 50px;
+        background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+        color: #000;
+        font-weight: 700;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+
+    .portfolio-button:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    /* RIGHT SIDE */
+    .about-right {
+        flex: 2;
+    }
+
+    .about-title {
+        font-size: 2.6rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, var(--text-main), var(--primary-neon));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .accent-line {
+        width: 80px;
+        height: 4px;
+        background: var(--primary-neon);
+        margin: 20px 0 30px 0;
+        border-radius: 50px;
+    }
+
+    .about-right p {
+        line-height: 1.8;
+        margin-bottom: 25px;
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+    }
+
+    .highlight {
+        color: var(--primary-neon);
+        font-weight: 700;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+
+        .about-card {
+            flex-direction: column;
+            padding: 40px;
+            gap: 40px;
+        }
+
+        .about-title {
+            font-size: 2rem;
+        }
+
+    }
+</style>
+
 {% endblock %}

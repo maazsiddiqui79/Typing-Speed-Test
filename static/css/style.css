@@ -8,8 +8,8 @@
     --bg-panel: rgba(255, 255, 255, 0.75);
     --glass-border: 1px solid rgba(255, 255, 255, 0.8);
     --glass-highlight: rgba(255, 255, 255, 0.9);
-    --text-main: #0f172a;
-    /* Darker Slate */
+    --text-main: #000000;
+    /* Pure Black for Light Mode */
     --text-muted: #475569;
     /* Medium Slate */
     --primary-neon: #6366f1;
@@ -17,7 +17,7 @@
     --secondary-neon: #8b5cf6;
     /* Violet 500 */
     --accent-glow: rgba(99, 102, 241, 0.2);
-    --correct-color: #00ff88;
+    --correct-color: #006b39;
     --incorrect-color: #dc2626;
     --font-main: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -153,6 +153,7 @@ a:hover {
 }
 
 .btn-secondary:hover {
+    transform: translateY(-3px);
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
     border-color: rgba(255, 255, 255, 0.3);
@@ -173,11 +174,15 @@ a:hover {
     padding: 24px 5%;
     background: var(--bg-panel);
     border-bottom: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px);
-    position: sticky;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    backdrop-filter: blur(10px);
+    /* position: sticky; */
     top: 0;
     z-index: 1000;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 30px rgb(0, 0, 0);
 }
 
 .logo {
@@ -292,8 +297,8 @@ a:hover {
     white-space: pre-wrap;
     word-break: break-all;
     font-family: var(--font-mono);
-    color: #4a515c;
-    /* Dimmed text for upcoming words */
+    color: var(--text-main);
+    /* Dynamic text color */
     text-align: left;
     padding: 20px;
     border-radius: 12px;
@@ -316,8 +321,9 @@ a:hover {
 }
 
 span.correct {
-    color: var(--text-main);
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    color: var(--correct-color);
+    text-shadow: 0 0 5px rgb(0, 255, 136);
+
 }
 
 span.incorrect {
@@ -344,6 +350,8 @@ span.incorrect {
     /* Pull back to overlap char gap */
     position: absolute;
     transition: all 0.1s cubic-bezier(0.1, 0.7, 1.0, 0.1);
+    z-index: 10;
+    pointer-events: none;
 }
 
 @keyframes blink {
@@ -362,13 +370,15 @@ span.incorrect {
 .controls-panel {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    align-items: center;
+    gap: 20px;
     margin-top: 40px;
     background: rgba(0, 0, 0, 0.2);
-    padding: 15px;
+    padding: 15px 25px;
     border-radius: 50px;
-    display: inline-flex;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    flex-wrap: wrap;
+    max-width: 100%;
 }
 
 .control-group {
@@ -418,7 +428,8 @@ span.incorrect {
     font-family: var(--font-main);
 }
 
-.key.active {
+.key.active,
+.key:hover {
     background-color: var(--primary-neon);
     color: #000;
     transform: scale(0.95);
@@ -547,7 +558,143 @@ td {
 #results-modal h2 {
     font-size: 2rem;
     margin-bottom: 10px;
-    background: linear-gradient(to right, #fff, var(--primary-neon));
+    background: linear-gradient(to right, var(--secondary-neon), var(--primary-neon));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+/* ---------------------------------------------------------------------- */
+body.dark::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--primary-neon) 0%, transparent 60%);
+    opacity: 0.08;
+    top: -200px;
+    right: -200px;
+    z-index: -1;
+}
+tbody tr:hover {
+    background: rgba(255,255,255,0.05);
+    transition: background 0.2s ease;
+}
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-neon), var(--secondary-neon));
+    transition: width 0.4s ease;
+}
+.highlight-glow {
+    text-shadow: 0 0 20px var(--accent-glow);
+}
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 15px 25px;
+    background: var(--bg-panel);
+    border: 1px solid var(--primary-neon);
+    border-radius: 10px;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+/* -------------------- FLASH ------------------------------- */
+/* Flash Container */
+.flash-container {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.flash-message {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    backdrop-filter: blur(15px);
+    position: relative;
+    animation: slideFade 0.4s ease forwards;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+@keyframes slideFade {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.flash-icon {
+    font-size: 1rem;
+}
+
+.flash-text {
+    flex: 1;
+}
+
+.flash-close {
+    cursor: pointer;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.flash-close:hover {
+    opacity: 1;
+}
+
+.flash-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    animation: shrink 4s linear forwards;
+}
+
+@keyframes shrink {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+.flash-error {
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.4);
+    color: var(--incorrect-color);
+}
+
+.flash-error .flash-progress {
+    background: var(--incorrect-color);
+}
+
+.flash-success {
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.4);
+    color: var(--correct-color);
+}
+
+.flash-success .flash-progress {
+    background: var(--correct-color);
 }

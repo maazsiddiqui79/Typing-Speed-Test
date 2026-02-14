@@ -47,3 +47,15 @@ def save_result():
     db.session.commit()
     return jsonify({'message': 'Result saved successfully!'})
 
+@main.route('/clear_data', methods=['POST'])
+@login_required
+def clear_data():
+    try:
+        TypingResult.query.filter_by(user_id=current_user.id).delete()
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        # Optionally handle error
+        pass
+    return jsonify({'success': True})
+

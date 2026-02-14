@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const numbers = "0123456789";
+    const punctuation = ".,!?;:'\"()[]{}-_+=@#$%^&*";
 
     function initAudio() {
         if (!audioCtx) {
@@ -102,6 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     let numLen = Math.floor(Math.random() * 4) + 1;
                     for (let j = 0; j < numLen; j++) newText += numbers[Math.floor(Math.random() * numbers.length)];
+                }
+                newText += " ";
+                generatedCount++;
+            } else if (mode === 'punctuation') {
+                if (Math.random() > 0.5) {
+                    newText += words[Math.floor(Math.random() * words.length)];
+                } else {
+                    let puncLen = Math.floor(Math.random() * 3) + 1;
+                    for (let j = 0; j < puncLen; j++) newText += punctuation[Math.floor(Math.random() * punctuation.length)];
                 }
                 newText += " ";
                 generatedCount++;
@@ -144,8 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
             typingText.appendChild(wordDiv);
         }
 
+        // Create Cursor
+        const cursorSpan = document.createElement("span");
+        cursorSpan.className = "cursor";
+        typingText.appendChild(cursorSpan);
+
         localCharIndex = 0;
-        updateCursor(typingText.querySelectorAll("span"), 0);
+        // Use specific selector to avoid selecting the cursor span itself as a char
+        updateCursor(typingText.querySelectorAll(".word span"), 0);
     }
 
     function resetGame() {
@@ -173,7 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function initTyping(e) {
         initAudio();
 
-        let chars = typingText.querySelectorAll("span");
+        // Specific selector for characters only
+        let chars = typingText.querySelectorAll(".word span");
         let typedChar = e.key;
 
         if (e.key === 'Shift') {
@@ -193,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Pagination: Auto-load next page if current is done
         if (localCharIndex >= chars.length) {
             setNewPage();
-            chars = typingText.querySelectorAll("span");
+            chars = typingText.querySelectorAll(".word span");
         }
 
         if (typedChar === 'Backspace') {
@@ -209,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (typedChar.length === 1) {
             if (localCharIndex >= chars.length) {
                 setNewPage();
-                chars = typingText.querySelectorAll("span");
+                chars = typingText.querySelectorAll(".word span");
             }
 
             if (typedChar === chars[localCharIndex].innerText) {
@@ -268,13 +285,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateCursor(chars, index) {
-        const prev = document.querySelector('.typing-area span.active');
-        if (prev) prev.classList.remove('active');
+        const cursor = document.querySelector('.cursor');
+        if (!cursor) return;
 
         if (index < chars.length) {
-            chars[index].classList.add("active");
-            // Auto-scroll logic removed for Pagination mode
-            // Ensure cursor is visible? Pagination page is small enough to fit.
+            const char = chars[index];
+            cursor.style.left = char.offsetLeft + 'px';
+            cursor.style.top = char.offsetTop + 'px';
+        } else if (chars.length > 0) {
+            // End of text, position after last char
+            const lastChar = chars[chars.length - 1];
+            cursor.style.left = (lastChar.offsetLeft + lastChar.offsetWidth) + 'px';
+            cursor.style.top = lastChar.offsetTop + 'px';
+        } else {
+            // Empty (start)
+            cursor.style.left = '0px';
+            cursor.style.top = '0px';
         }
     }
 
