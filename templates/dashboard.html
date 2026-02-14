@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 20px; max-width: 1100px; margin: 0 auto;">
+
+    <h1 style="margin-bottom: 40px;">
+        Welcome back, {{ current_user.username }}!
+    </h1>
+
+    <!-- Stats Cards -->
+    <div class="dashboard-grid">
+
+        <div class="glass-panel stat-card">
+            <h3>⚡ Average WPM</h3>
+            <p>{{ avg_wpm }}</p>
+        </div>
+
+        <div class="glass-panel stat-card">
+            <h3>🏆 Best WPM</h3>
+            <p>{{ best_wpm }}</p>
+        </div>
+
+        <div class="glass-panel stat-card">
+            <h3>📝 Tests Taken</h3>
+            <p>{{ total_tests }}</p>
+        </div>
+
+    </div>
+
+    <!-- Performance History Chart -->
+    <div class="glass-panel" style="margin-top: 40px; padding: 30px;">
+        <h3 style="margin-bottom: 25px;">Performance History</h3>
+
+        <div class="chart-container" style="height: 350px;">
+            <canvas id="progressChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Recent Tests Table -->
+    <div class="glass-panel" style="margin-top: 40px; padding: 30px;">
+        <h3 style="margin-bottom: 20px;">Recent Tests</h3>
+
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <th style="padding: 12px;">Date</th>
+                    <th style="padding: 12px;">WPM</th>
+                    <th style="padding: 12px;">Accuracy</th>
+                    <th style="padding: 12px;">Mode</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if results %}
+                {% for result in results[:10] %}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: 12px;">
+                        {{ result.date_created.strftime('%Y-%m-%d %H:%M') }}
+                    </td>
+                    <td style="padding: 12px; font-weight: 700; color: var(--primary-neon);">
+                        {{ result.wpm }}
+                    </td>
+                    <td style="padding: 12px;">
+                        {{ result.accuracy }}%
+                    </td>
+                    <td style="padding: 12px;">
+                        {{ result.mode }}
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="4" style="text-align: center; padding: 20px; color: var(--text-secondary);">No tests
+                        taken yet.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<!-- Chart Script -->
+<script>
+    const labels = [
+        {% for r in results | reverse %}
+    "{{ r.date_created.strftime('%m-%d') }}",
+        {% endfor %}
+    ];
+
+    const wpmData = [
+        {% for r in results | reverse %}
+    { { r.wpm } },
+    {% endfor %}
+    ];
+
+    const accuracyData = [
+        {% for r in results | reverse %}
+    { { r.accuracy } },
+    {% endfor %}
+    ];
+
+    const ctx = document.getElementById('progressChart').getContext('2d');
+
+    const isDark = document.body.classList.contains('dark');
+
+    const primaryColor = isDark ? '#00f2ff' : '#6366f1';
+    const secondaryColor = isDark ? '#7000ff' : '#8b5cf6';
+    const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+    const textColor = isDark ? '#8b949e' : '#475569';
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'WPM',
+                    data: wpmData,
+                    borderColor: primaryColor,
+                    backgroundColor: primaryColor + '33',
+                    tension: 0.4,
+                    fill: true,
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    pointBackgroundColor: primaryColor
+                },
+                {
+                    label: 'Accuracy',
+                    data: accuracyData,
+                    borderColor: secondaryColor,
+                    backgroundColor: secondaryColor + '22',
+                    tension: 0.4,
+                    fill: false,
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    pointBackgroundColor: secondaryColor
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor,
+                        font: {
+                            size: 14,
+                            weight: '600'
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: isDark ? '#111' : '#fff',
+                    titleColor: primaryColor,
+                    bodyColor: textColor,
+                    borderColor: primaryColor,
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: gridColor
+                    },
+                    ticks: {
+                        color: textColor
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: textColor
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

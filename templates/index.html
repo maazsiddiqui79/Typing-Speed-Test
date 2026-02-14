@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 20px;">
+    {% if not current_user.is_authenticated %}
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">Master Your Typing Speed</h1>
+        <p style="font-size: 1.2rem; color: #8b949e;">Join thousands of users improving their wpm every day.</p>
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">Get Started</a>
+            <a href="#test-area" class="btn btn-secondary" style="margin-left: 10px;">Try Now</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div id="test-area" class="typing-container glass-panel">
+        <div class="controls-panel">
+            <button id="restart-btn" class="btn btn-primary">
+                Restart Test
+            </button>
+            <div class="divider"></div>
+            <div class="control-group">
+                <button class="btn btn-secondary time-option active" data-time="30">30s</button>
+                <button class="btn btn-secondary time-option" data-time="60">60s</button>
+            </div>
+            <div class="divider"></div>
+            <div class="control-group">
+                <button class="btn btn-secondary mode-option active" data-mode="words">Words</button>
+                <button class="btn btn-secondary mode-option" data-mode="sentences">Sentences</button>
+                <button class="btn btn-secondary mode-option" data-mode="numbers">Numbers</button>
+            </div>
+        </div>
+        <br><br>
+        <div class="stats-bar">
+
+            <div class="stat-item">
+                <span class="stat-label">Time</span>
+                <span class="stat-value" id="timer">30</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">WPM</span>
+                <span class="stat-value" id="wpm">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Accuracy</span>
+                <span class="stat-value"><span id="accuracy">100</span><span style="font-size: 1rem;">%</span></span>
+            </div>
+        </div>
+
+        <div class="typing-area glass-panel" id="typing-text" tabindex="0">
+            <!-- Text will be injected here by JS -->
+            <span class="cursor"></span>
+        </div>
+
+
+
+        <!-- On-screen Keyboard -->
+        <!-- On-screen Keyboard -->
+        <!-- On-screen Keyboard -->
+        <div class="keyboard">
+
+            <!-- Row 1 -->
+            <div class="keyboard-row">
+                <div class="key" data-key="`">`</div>
+                <div class="key" data-key="1">1</div>
+                <div class="key" data-key="2">2</div>
+                <div class="key" data-key="3">3</div>
+                <div class="key" data-key="4">4</div>
+                <div class="key" data-key="5">5</div>
+                <div class="key" data-key="6">6</div>
+                <div class="key" data-key="7">7</div>
+                <div class="key" data-key="8">8</div>
+                <div class="key" data-key="9">9</div>
+                <div class="key" data-key="0">0</div>
+                <div class="key" data-key="-">-</div>
+                <div class="key" data-key="=">=</div>
+                <div class="key" style="width: 90px;" data-key="Backspace">Bksp</div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="keyboard-row">
+                <div class="key" style="width: 80px;" data-key="Tab">Tab</div>
+                <div class="key" data-key="q">Q</div>
+                <div class="key" data-key="w">W</div>
+                <div class="key" data-key="e">E</div>
+                <div class="key" data-key="r">R</div>
+                <div class="key" data-key="t">T</div>
+                <div class="key" data-key="y">Y</div>
+                <div class="key" data-key="u">U</div>
+                <div class="key" data-key="i">I</div>
+                <div class="key" data-key="o">O</div>
+                <div class="key" data-key="p">P</div>
+                <div class="key" data-key="[">[</div>
+                <div class="key" data-key="]">]</div>
+                <div class="key" data-key="\">\\</div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="keyboard-row">
+                <div class="key" style="width: 95px;" data-key="CapsLock">Caps</div>
+                <div class="key" data-key="a">A</div>
+                <div class="key" data-key="s">S</div>
+                <div class="key" data-key="d">D</div>
+                <div class="key" data-key="f">F</div>
+                <div class="key" data-key="g">G</div>
+                <div class="key" data-key="h">H</div>
+                <div class="key" data-key="j">J</div>
+                <div class="key" data-key="k">K</div>
+                <div class="key" data-key="l">L</div>
+                <div class="key" data-key=";">;</div>
+                <div class="key" data-key="'">'</div>
+                <div class="key" style="width: 100px;" data-key="Enter">Enter</div>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="keyboard-row">
+                <div class="key" style="width: 110px;" data-key="Shift">Shift</div>
+                <div class="key" data-key="z">Z</div>
+                <div class="key" data-key="x">X</div>
+                <div class="key" data-key="c">C</div>
+                <div class="key" data-key="v">V</div>
+                <div class="key" data-key="b">B</div>
+                <div class="key" data-key="n">N</div>
+                <div class="key" data-key="m">M</div>
+                <div class="key" data-key=",">,</div>
+                <div class="key" data-key=".">.</div>
+                <div class="key" data-key="/">/</div>
+                <div class="key" style="width: 110px;" data-key="Shift">Shift</div>
+            </div>
+
+            <!-- Row 5 -->
+            <div class="keyboard-row">
+                <div class="key" style="width: 70px;" data-key="Control">Ctrl</div>
+                <div class="key" style="width: 70px;" data-key="Meta">Win</div>
+                <div class="key" style="width: 70px;" data-key="Alt">Alt</div>
+                <div class="key" style="width: 300px;" data-key="Space">Space</div>
+                <div class="key" style="width: 70px;" data-key="Alt">Alt</div>
+                <div class="key" style="width: 70px;" data-key="Meta">Win</div>
+                <div class="key" style="width: 70px;" data-key="Control">Ctrl</div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Results Modal (Hidden by default) -->
+<div id="results-modal" class="glass-panel"
+    style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; width: 400px; text-align: center;">
+    <h2 style="color: var(--primary-color);">Test Complete!</h2>
+    <div style="font-size: 3rem; font-weight: 700; margin: 20px 0;" id="final-wpm">0 WPM</div>
+    <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+        <div>Accuracy: <span id="final-accuracy" style="color: var(--secondary-color);">0%</span></div>
+        <div>Mistakes: <span id="final-mistakes" style="color: var(--danger-color);">0</span></div>
+    </div>
+    {% if current_user.is_authenticated %}
+    <p style="color: var(--secondary-color); font-size: 0.9rem;">Result saved!</p>
+    {% else %}
+    <p><a href="{{ url_for('auth.login') }}">Log in</a> to save your results.</p>
+    {% endif %}
+    <button id="close-modal" class="btn btn-primary">Close</button>
+</div>
+<div id="modal-overlay"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1999;">
+</div>
+
+{% endblock %}
