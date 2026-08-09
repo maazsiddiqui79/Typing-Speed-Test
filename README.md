@@ -87,13 +87,13 @@ project-root/
 
 1️⃣ Clone the repository  
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/maazsiddiqui79/Typing-Speed-Test.git
 ````
 
 2️⃣ Navigate into the project folder
 
 ```bash
-cd Typing Speed Test
+cd Typing-Speed-Test
 ```
 
 3️⃣ (Optional but Recommended) Create a virtual environment
