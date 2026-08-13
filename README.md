@@ -87,7 +87,7 @@ project-root/
 
 1️⃣ Clone the repository  
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/maazsiddiqui79/Typing-Speed-Test.git
 ````
 
 2️⃣ Navigate into the project folder
@@ -157,5 +157,3 @@ Maaz Siddiqui 🎓 Diploma in Computer Engineering
 🔗 Portfolio: [www.themaaz.online](http://www.themaaz.online) 
 💻 Passionate about backend systems and clean UI design
 
-```
-```
